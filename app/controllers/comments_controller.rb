@@ -2,12 +2,14 @@ class CommentsController < ApplicationController
 
   before_filter :authenticate, :only => :destroy
 
+  # POST /posts/:post_id/comments
   def create
     @post = Post.find(params[:post_id])
     @comment = @post.comments.create(comment_params)
     redirect_to post_path(@post)
   end
 
+  # DELETE /posts/:post_id/comments/:id
   def destroy
     @post = Post.find(params[:post_id])
     @comment = @post.comments.find(params[:id])
