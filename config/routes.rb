@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   devise_for :users
+  root 'home#index'
+
   resources :posts
   get 'home/index'
 
@@ -7,11 +9,14 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'home#index'
 
   resources :posts do
     resources :comments
   end
+
+  # LIKE
+  post 'post/:post_id/like' => 'posts#like_toggle'
+
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
