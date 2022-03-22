@@ -25,11 +25,11 @@
     <%= post_form.text_area :content %>
   </div>
 
-  <%= post_form.file_field :attachment%>
-
   <h2>Tags</h2>
   <%= render :partial => 'tags/form',
              :locals => {:form => post_form} %>
+
+  <%= post_form.file_field :attachment%>
   <div class="actions">
     <%= post_form.submit %>
   </div>

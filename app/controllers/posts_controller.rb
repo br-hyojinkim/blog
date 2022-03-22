@@ -1,4 +1,5 @@
 class PostsController < ApplicationController
+  skip_before_action :verify_authenticity_token # turn off CSRF
   before_action :authenticate_user!, :only => [:index, :show, :create, :update, :edit, :destroy]
 
   # GET /posts
@@ -69,6 +70,20 @@ class PostsController < ApplicationController
       format.html { redirect_to posts_url, notice: 'Post was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  # LIKE /post/1/like
+  def like_toggle
+    puts current_user.id
+
+    like = Like.find_by(user_id: current_user.id, post_id: params[:post_id])
+
+    if like.nil?
+      Like.create(user_id: current_user.id, post_id: params[:post_id])
+    else
+      like.destroy
+    end
+    redirect_to :back
   end
 
   private

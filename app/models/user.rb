@@ -5,4 +5,9 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :validatable
 
   has_many :posts, :dependent => :destroy
+  has_many :likes, :dependent => :destroy
+
+  def is_like? (post)
+    Like.find_by(user_id: self.id, post_id: post.id).present?
+  end
 end
