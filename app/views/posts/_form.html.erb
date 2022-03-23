@@ -13,6 +13,7 @@
   <% end %>
 
   <div class="field">
+    <%= post_form.hidden_field :user_id, value: current_user.id %>
     <%= post_form.label :name %><br>
     <%= post_form.text_field :name %>
   </div>

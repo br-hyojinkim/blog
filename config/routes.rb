@@ -1,22 +1,23 @@
 Rails.application.routes.draw do
   devise_for :users
-  root 'home#index'
 
-  resources :posts
-  get 'home/index'
+  root 'home#index'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
+
+  # resources 위치에 따라 적용되는 순서가 다름!
+  # LIKE
+  post 'post/:post_id/like' => 'posts#like_toggle'
+
+  # Search
+  get 'posts/search' => 'posts#search'
 
   # You can have the root of your site routed with "root"
 
   resources :posts do
     resources :comments
   end
-
-  # LIKE
-  post 'post/:post_id/like' => 'posts#like_toggle'
-
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
