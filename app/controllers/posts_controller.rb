@@ -1,5 +1,6 @@
 class PostsController < ApplicationController
   skip_before_action :verify_authenticity_token # turn off CSRF
+  before_action :log_impression, :only => [:show]
   before_action :authenticate_user!, :only => [:index, :show, :create, :update, :edit, :destroy]
 
   # GET /posts
@@ -107,6 +108,12 @@ class PostsController < ApplicationController
       like.destroy
     end
     redirect_to :back
+  end
+
+  # 조회수 설정
+  def log_impression
+    @hit_post = Post.find(params[:id])
+    @hit_post.impressions.create(ip_address: request.remote_ip, user_id:current_user.id)
   end
 
   private

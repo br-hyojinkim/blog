@@ -40,6 +40,10 @@ gem 'carrierwave'
 # Pagination
 gem 'pagy'
 
+# impressionist
+gem 'impressionist'
+
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
