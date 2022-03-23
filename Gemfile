@@ -34,6 +34,9 @@ gem 'rspec-rails', '~> 3.5'
 # Login
 gem 'devise'
 
+# File Upload
+gem 'carrierwave'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

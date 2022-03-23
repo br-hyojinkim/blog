@@ -1,29 +1,41 @@
-<%= current_user.email %>님 환영합니다.
-<a href="/users/sign_out" data-method="delete">로그아웃</a>
+<% if user_signed_in? %>
+  <%= current_user.email %>님 환영합니다.
+  <a href="/users/sign_out" data-method="delete">로그아웃</a>
+<% else %>
+  <a href="/users/sign_in" data-method="delete">로그인</a>
+<% end %>
 
 <h1>Listing posts</h1>
 
+<%= form_tag({:controller => 'posts', action: 'search'}, method: "get") do %>
+  <%= label_tag(:div, 'Search for title') %>
+  <%= text_field_tag(:query) %>
+  <%= submit_tag("Search") %>
+<% end %>
+
 <table>
   <thead>
-    <tr>
-      <th>Name</th>
-      <th>Title</th>
-      <th>Content</th>
-      <th colspan="3"></th>
-    </tr>
+  <tr>
+    <th>Name</th>
+    <th>Title</th>
+    <th>Content</th>
+    <th>Likes</th>
+    <th colspan="4"></th>
+  </tr>
   </thead>
 
   <tbody>
-    <% @posts.each do |post| %>
-      <tr>
-        <td><%= post.name %></td>
-        <td><%= post.title %></td>
-        <td><%= post.content %></td>
-        <td><%= link_to 'Show', post %></td>
-        <td><%= link_to 'Edit', edit_post_path(post) %></td>
-        <td><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
+  <% @posts.each do |post| %>
+    <tr>
+      <td><%= post.name %></td>
+      <td><%= post.title %></td>
+      <td><%= post.content %></td>
+      <td><%= post.likes.size %></td>
+      <td><%= link_to 'Show', post %></td>
+      <td><%= link_to 'Edit', edit_post_path(post) %></td>
+      <td><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    </tr>
+  <% end %>
   </tbody>
 </table>
 

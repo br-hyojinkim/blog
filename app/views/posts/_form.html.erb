@@ -13,6 +13,7 @@
   <% end %>
 
   <div class="field">
+    <%= post_form.hidden_field :user_id, value: current_user.id %>
     <%= post_form.label :name %><br>
     <%= post_form.text_field :name %>
   </div>
@@ -24,9 +25,12 @@
     <%= post_form.label :content %><br>
     <%= post_form.text_area :content %>
   </div>
+
   <h2>Tags</h2>
   <%= render :partial => 'tags/form',
              :locals => {:form => post_form} %>
+
+  <%= post_form.file_field :attachment%>
   <div class="actions">
     <%= post_form.submit %>
   </div>

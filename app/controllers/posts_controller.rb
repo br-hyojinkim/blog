@@ -1,10 +1,14 @@
 class PostsController < ApplicationController
+  skip_before_action :verify_authenticity_token # turn off CSRF
   before_action :authenticate_user!, :only => [:index, :show, :create, :update, :edit, :destroy]
 
   # GET /posts
   # GET /posts.json
   def index
     @posts = Post.all
+    unless user_signed_in?
+      redirect_to 'users/sign_in'
+    end
   end
 
   # GET /posts/1
@@ -49,14 +53,18 @@ class PostsController < ApplicationController
   def update
     @post = Post.find(params[:id])
 
-    respond_to do |format|
-      if @post.update_attributes(post_params)
-        format.html { redirect_to @post, notice: 'Post was successfully updated.' }
-        format.json { render :show, status: :ok, location: @post }
-      else
-        format.html { render :edit }
-        format.json { render json: @post.errors, status: :unprocessable_entity }
+    if current_user.id == @post.user_id
+      respond_to do |format|
+        if @post.update_attributes(post_params)
+          format.html { redirect_to @post, notice: 'Post was successfully updated.' }
+          format.json { render :show, status: :ok, location: @post }
+        else
+          format.html { render :edit }
+          format.json { render json: @post.errors, status: :unprocessable_entity }
+        end
       end
+    else
+      redirect_to "/posts/#{@post.id}"
     end
   end
 
@@ -64,11 +72,41 @@ class PostsController < ApplicationController
   # DELETE /posts/1.json
   def destroy
     @post = Post.find(params[:id])
-    @post.destroy
-    respond_to do |format|
-      format.html { redirect_to posts_url, notice: 'Post was successfully destroyed.' }
-      format.json { head :no_content }
+
+    if current_user.id == @post.user_id
+      @post.destroy
+      respond_to do |format|
+        format.html { redirect_to posts_url, notice: 'Post was successfully destroyed.' }
+        format.json { head :no_content }
+      end
+    else
+      redirect_to "/posts/index"
     end
+  end
+
+  # Search
+  # GET /posts/search
+  def search
+    @posts = Post.where("title LIKE ?", "%#{params[:query]}%")
+
+    respond_to do |format|
+      format.html { render :action => 'index' }
+      format.xml  { render :xml => @posts }
+    end
+  end
+
+  # LIKE /post/1/like
+  def like_toggle
+    puts current_user.id
+
+    like = Like.find_by(user_id: current_user.id, post_id: params[:post_id])
+
+    if like.nil?
+      Like.create(user_id: current_user.id, post_id: params[:post_id])
+    else
+      like.destroy
+    end
+    redirect_to :back
   end
 
   private
@@ -79,6 +117,6 @@ class PostsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def post_params
-      params.require(:post).permit(:name, :title, :content, tags_attributes: [:_destroy, :id, :name])
+      params.require(:post).permit(:name, :title, :content, :attachment, :user_id, tags_attributes: [:_destroy, :id, :name])
     end
 end
