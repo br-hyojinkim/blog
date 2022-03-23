@@ -12,6 +12,16 @@ class Post < ActiveRecord::Base
   after_destroy :log_destroy_action
   accepts_nested_attributes_for :tags, :allow_destroy => true, :reject_if => proc { |attrs| attrs.all? { |k, v| v.blank? } }
 
+  # impression
+  is_impressionable
+  def impression_count
+    impressions.size
+  end
+
+  def unique_impression_count
+    impressions.group(:ip_address).size.keys.length
+  end
+
   private
   def log_destroy_action
     puts 'Posts are also destroyed'
