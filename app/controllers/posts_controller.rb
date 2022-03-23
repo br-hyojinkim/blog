@@ -5,7 +5,7 @@ class PostsController < ApplicationController
   # GET /posts
   # GET /posts.json
   def index
-    @posts = Post.all
+    @pagy, @posts = pagy(Post.all, items: 5)
     unless user_signed_in?
       redirect_to 'users/sign_in'
     end
