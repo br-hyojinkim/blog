@@ -87,7 +87,7 @@ class PostsController < ApplicationController
   # Search
   # GET /posts/search
   def search
-    @posts = Post.where("title LIKE ?", "%#{params[:query]}%")
+    @pagy, @posts = pagy(Post.where("title LIKE ?", "%#{params[:query]}%"), item: 5)
 
     respond_to do |format|
       format.html { render :action => 'index' }
