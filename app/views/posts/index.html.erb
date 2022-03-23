@@ -5,8 +5,13 @@
   <a href="/users/sign_in" data-method="delete">로그인</a>
 <% end %>
 
-
 <h1>Listing posts</h1>
+
+<%= form_tag({:controller => 'posts', action: 'search'}, method: "get") do %>
+  <%= label_tag(:div, 'Search for title') %>
+  <%= text_field_tag(:query) %>
+  <%= submit_tag("Search") %>
+<% end %>
 
 <table>
   <thead>

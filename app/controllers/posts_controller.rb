@@ -6,6 +6,9 @@ class PostsController < ApplicationController
   # GET /posts.json
   def index
     @posts = Post.all
+    unless user_signed_in?
+      redirect_to 'users/sign_in'
+    end
   end
 
   # GET /posts/1
@@ -78,6 +81,17 @@ class PostsController < ApplicationController
       end
     else
       redirect_to "/posts/index"
+    end
+  end
+
+  # Search
+  # GET /posts/search
+  def search
+    @posts = Post.where("title LIKE ?", "%#{params[:query]}%")
+
+    respond_to do |format|
+      format.html { render :action => 'index' }
+      format.xml  { render :xml => @posts }
     end
   end
 
