@@ -37,6 +37,9 @@ gem 'devise'
 # File Upload
 gem 'carrierwave'
 
+# Pagination
+gem 'pagy'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

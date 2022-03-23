@@ -72,6 +72,7 @@ GEM
     multi_json (1.15.0)
     mysql2 (0.3.20)
     orm_adapter (0.5.0)
+    pagy (3.14.0)
     rack (1.5.5)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -155,6 +156,7 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jquery-rails
   mysql2 (~> 0.3.20)
+  pagy
   rails (= 4.1.12)
   rspec-rails (~> 3.5)
   sass-rails (~> 4.0.3)
