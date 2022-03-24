@@ -13,6 +13,10 @@ Rails.application.routes.draw do
   # Search
   get 'posts/search' => 'posts#search'
 
+  # Category
+  get 'posts/index/:category' => 'posts#index'
+  get 'posts/new/:category' => 'posts#new'
+
   # You can have the root of your site routed with "root"
 
   resources :posts do
