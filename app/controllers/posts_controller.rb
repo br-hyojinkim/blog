@@ -6,7 +6,8 @@ class PostsController < ApplicationController
   # GET /posts
   # GET /posts.json
   def index
-    @pagy, @posts = pagy(Post.all, items: 5)
+    @pagy, @posts = pagy(Post.where("category like ?", "%#{params[:category]}%").order("created_at DESC"), items: 5)
+
     unless user_signed_in?
       redirect_to 'users/sign_in'
     end
@@ -25,6 +26,7 @@ class PostsController < ApplicationController
 
   # GET /posts/new
   def new
+    @category = params[:category]
     @post = Post.new
   end
 
@@ -37,6 +39,7 @@ class PostsController < ApplicationController
   # POST /posts.json
   def create
     @post = Post.new(post_params)
+    @post.category = params[:category]
 
     respond_to do |format|
       if @post.save
